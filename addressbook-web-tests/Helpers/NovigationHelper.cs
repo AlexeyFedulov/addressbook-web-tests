@@ -13,8 +13,8 @@ namespace WebAddressbookTests
     {
         private string baseURL;
 
-        public NovigationHelper(IWebDriver driver, string baseURL)
-            : base(driver)
+        public NovigationHelper(ApplicationManager manager, string baseURL)
+            : base(manager)
         {
             this.baseURL = baseURL;
         }

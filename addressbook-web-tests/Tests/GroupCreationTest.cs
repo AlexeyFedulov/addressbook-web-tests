@@ -8,22 +8,30 @@ using NUnit.Framework;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class GroupCreationTests : TestBase
+    public class GroupCreationTests : AuthTestBase
     {
         [Test]
         public void GroupCreationTest()
         {
-            novigator.GoToHomePage();
-            loginHelper.Login(new AccountData("admin", "secret"));
-            groupHelper.TimeoutSec50();
-            novigator.GoToGroupPage();
-            groupHelper.InitNewGroupCreation();
+            app.Groups.TimeoutSec50();
             GroupData group = new GroupData("aaa");
             group.Header = "ddd";
             group.Footer = "fff";
-            groupHelper.FillGroupCreation(group);
-            groupHelper.SubmitGroupCreation();
-            groupHelper.ReturnToGroupsPage();
+
+            app.Groups.Create(group);
+        }
+
+        [Test]
+        public void EmptyGroupCreationTest()
+        {
+            app.Groups.TimeoutSec50();
+            GroupData group = new GroupData("");
+            group.Header = "";
+            group.Footer = "";
+
+            app.Groups.Create(group);
+
         }
     }
 }
+

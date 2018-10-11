@@ -10,15 +10,15 @@ using OpenQA.Selenium.Support.UI;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class ContactCreationTests : TestBase
+    public class ContactCreationTests : AuthTestBase
     {
         [Test]
         public void ContactCreationTest()
         {
-            novigator.GoToHomePage();
-            loginHelper.Login(new AccountData("admin", "secret"));
-            groupHelper.TimeoutSec50();
-            novigator.AddNew();
+            app.Navigator.GoToHomePage();
+            app.Auth.Login(new AccountData("admin", "secret"));
+            app.Groups.TimeoutSec50();
+            app.Navigator.AddNew();
             ContactData group = new ContactData("ivanov");
             group.Middlename = "iv";
             group.Lastname = "ivanov123";
@@ -34,9 +34,9 @@ namespace WebAddressbookTests
             group.Address2 = "varsha";
             group.Phone2 = "sdgs";
             group.Notes = "sfg";
-            groupHelper.FillGroupForm(group);
+            app.Groups.FillGroupForm(group);
             // ERROR: Caught exception [Error: Dom locators are not implemented yet!]
-            groupHelper.Logout();
+            app.Groups.Logout();
         }
     }
 }
