@@ -36,12 +36,47 @@ namespace WebAddressbookTests
             return this;
         }
 
+        private List<GroupData> groupCache = null;
 
+        public List<GroupData> GetGroupList()
+        {
+            if (groupCache == null)
+            {
+                groupCache = new List<GroupData>();
+                manager.Navigator.GoToGroupPage();
+                ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("span.group"));
+                foreach (IWebElement element in elements)
+                {      
+                    groupCache.Add(new GroupData(element.Text)
+                    {
+                        Id = element.FindElement(By.TagName("input")).GetAttribute("value")
+                    });
+                }
+
+                string allGroupsNames = driver.FindElement(By.CssSelector("div#content form")).Text;
+                string[] parts = allGroupsNames.Split('\n');
+                int shift = groupCache.Count - parts.Length; //на сколько в кеше правильных групп больше чем больше тех кусочком что смогли получить  
+                for (int i = 0; i < groupCache.Count; i++) //i++ на каждую итерацию увеличиавем счетчик на 1
+                {
+                    if (i < shift)
+                    {
+                        groupCache[i].Name = "";
+                    }
+                    else
+                    {
+                        groupCache[i].Name = parts[i].Trim(); //Trim() удаляет пробелы
+                    }
+                    
+                } 
+            }
+            return new List<GroupData>(groupCache);
+        }
 
         public void Create(GroupData group)
         {
 
             driver.FindElement(By.Name("new")).Click();
+            
         }
 
         public void FillGroupForm(GroupData group)
@@ -53,23 +88,32 @@ namespace WebAddressbookTests
 
 
 
-        public void SubmitGroupCreation()
+        public GroupHelper SubmitGroupCreation()
         {
 
             driver.FindElement(By.Name("submit")).Click();
+            groupCache = null;
+            return this;
             
         }
 
-        public void ReturnToGroupsPage()
+        public int GetGroupCount()
+        {
+            return driver.FindElements(By.CssSelector("span.group")).Count;
+        }
+
+        public GroupHelper ReturnToGroupsPage()
         {
 
             driver.FindElement(By.LinkText("group page")).Click();
-            driver.FindElement(By.LinkText("Logout")).Click();
+            //driver.FindElement(By.LinkText("Logout")).Click();
+            return this;
         }
 
-        public void SelectGroup(int index)
+        public GroupHelper SelectGroup(int index)
         {
-            driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + index + "]")).Click();
+            driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + (index+1) + "]")).Click();
+            return this;
         }
 
         public GroupHelper Remove(int v)
@@ -86,6 +130,7 @@ namespace WebAddressbookTests
         public GroupHelper RemoveGroup()
         {
             driver.FindElement(By.Name("delete")).Click();
+            groupCache = null;
             return this;
         }
 
@@ -135,6 +180,7 @@ namespace WebAddressbookTests
         public GroupHelper SubmitGroupModification()
         {
             driver.FindElement(By.Name("update")).Click();
+            groupCache = null;
             return this;
         }
 

@@ -75,10 +75,12 @@
     <Compile Include="Helpers\LoginHelper.cs" />
     <Compile Include="Helpers\NovigationHelper.cs" />
     <Compile Include="ManagementClass\AuthTestBase.cs" />
+    <Compile Include="Tests\Cikle.cs" />
     <Compile Include="Tests\ContactCreationTest.cs" />
     <Compile Include="AssistantClass\ContactData.cs" />
     <Compile Include="AssistantClass\Figure.cs" />
     <Compile Include="AssistantClass\GroupData.cs" />
+    <Compile Include="Tests\ContactInformationTests.cs" />
     <Compile Include="Tests\GroupModificationTests.cs" />
     <Compile Include="Tests\GroupRemovalTests.cs" />
     <Compile Include="AssistantClass\Square.cs" />
